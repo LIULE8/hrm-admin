@@ -3,6 +3,7 @@ package com.hrm.admin.controllers;
 import com.hrm.admin.dto.DepartmentDTO;
 import com.hrm.admin.services.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,13 @@ public class DepartmentController {
   @GetMapping
   public List<DepartmentDTO> findAll() {
     return departmentService.findAll();
+  }
+
+  @GetMapping("list")
+  public Page<DepartmentDTO> findAll(@RequestBody DepartmentDTO departmentDTO,
+                                     @RequestParam(defaultValue = "1", required = false) Integer curPage,
+                                     @RequestParam(defaultValue = "20", required = false) Integer pageSize) {
+    return departmentService.findByCriteria(departmentDTO, curPage - 1, pageSize);
   }
 
   @PostMapping

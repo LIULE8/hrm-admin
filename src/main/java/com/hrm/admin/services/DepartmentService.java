@@ -1,6 +1,7 @@
 package com.hrm.admin.services;
 
 import com.hrm.admin.dto.DepartmentDTO;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -17,4 +18,6 @@ public interface DepartmentService {
     void save(DepartmentDTO eepartmentDTO);
 
     void deleteById(Long id);
+
+    Page<DepartmentDTO> findByCriteria(DepartmentDTO departmentDTO, Integer curPage, Integer pageSize);
 }
