@@ -1,5 +1,6 @@
 package com.hrm.admin.entities;
 
+import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -30,5 +31,5 @@ public class Department extends BaseEntity {
   private String name;
 
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "department", fetch = FetchType.LAZY)
-  private List<Employee> employees = new ArrayList<>();
+  private List<Employee> employees = Lists.newArrayList();
 }
