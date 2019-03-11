@@ -1,7 +1,6 @@
 package com.hrm.admin.controllers;
 
 import com.hrm.admin.dto.EmployeeDTO;
-import com.hrm.admin.entities.Employee;
 import com.hrm.admin.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
