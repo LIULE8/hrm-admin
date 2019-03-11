@@ -2,6 +2,8 @@ package com.hrm.admin.services;
 
 import com.hrm.admin.dto.EmployeeDTO;
 
+import java.util.List;
+
 /**
  * @author LIULE9
  * @create 11/03/2019
@@ -9,4 +11,6 @@ import com.hrm.admin.dto.EmployeeDTO;
 public interface EmployeeService {
 
     EmployeeDTO getOne(Long employeeId);
+
+    List<EmployeeDTO> findAll();
 }
