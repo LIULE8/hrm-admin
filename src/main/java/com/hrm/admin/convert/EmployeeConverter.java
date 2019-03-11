@@ -26,4 +26,10 @@ public class EmployeeConverter {
   public List<EmployeeDTO> convert2DTOS(List<Employee> employees) {
     return employees.stream().map(this::convert2DTO).collect(toList());
   }
+
+  public Employee convertEntity(EmployeeDTO employeeDTO) {
+    Employee employee = new Employee();
+    BeanUtils.copyProperties(employeeDTO, employee);
+    return employee;
+  }
 }

@@ -13,4 +13,8 @@ public interface EmployeeService {
     EmployeeDTO getOne(Long employeeId);
 
     List<EmployeeDTO> findAll();
+
+    void save(EmployeeDTO employeeDTO);
+
+    void deleteById(Long id);
 }
