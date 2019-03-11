@@ -2,6 +2,8 @@ package com.hrm.admin.services;
 
 import com.hrm.admin.dto.DepartmentDTO;
 
+import java.util.List;
+
 /**
  *
  * @author LIULE9
@@ -9,4 +11,10 @@ import com.hrm.admin.dto.DepartmentDTO;
  */
 public interface DepartmentService {
     DepartmentDTO getOne(Long departmentId);
+
+    List<DepartmentDTO> findAll();
+
+    void save(DepartmentDTO eepartmentDTO);
+
+    void deleteById(Long id);
 }

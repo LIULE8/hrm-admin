@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.util.List;
 
 /**
  * @author LIULE9
@@ -29,5 +29,22 @@ public class DepartmentServiceImpl implements DepartmentService {
         .findById(departmentId)
         .map(department -> departmentConverter.convert2DTO(department))
         .orElse(null);
+  }
+
+  @Override
+  public List<DepartmentDTO> findAll() {
+    List<Department> departments = departmentRepository.findAll();
+    return departmentConverter.convert2DTOS(departments);
+  }
+
+  @Override
+  public void save(DepartmentDTO departmentDTO) {
+    Department department = departmentConverter.convertEntity(departmentDTO);
+    departmentRepository.save(department);
+  }
+
+  @Override
+  public void deleteById(Long id) {
+    departmentRepository.deleteById(id);
   }
 }

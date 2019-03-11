@@ -27,4 +27,10 @@ public class DepartmentConverter {
     public List<DepartmentDTO> convert2DTOS(List<Department> departments){
         return departments.stream().map(this::convert2DTO).collect(toList());
     }
+
+    public Department convertEntity(DepartmentDTO departmentDTO) {
+        Department department = new Department();
+        BeanUtils.copyProperties(departmentDTO, department);
+        return department;
+    }
 }
