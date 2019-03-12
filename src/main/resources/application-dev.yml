@@ -1,10 +1,7 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost:27111/hrm-admin
+      uri: mongodb://localhost:27017/hrm-admin
 
 server:
   port: 9090
-
-logging:
-  level: debug
