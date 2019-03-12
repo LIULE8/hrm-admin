@@ -4,6 +4,8 @@ import com.hrm.admin.dto.DepartmentDTO;
 import com.hrm.admin.services.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,24 +31,28 @@ public class DepartmentController {
   }
 
   @GetMapping("list")
-  public Page<DepartmentDTO> findAll(@RequestBody DepartmentDTO departmentDTO,
-                                     @RequestParam(defaultValue = "1", required = false) Integer curPage,
-                                     @RequestParam(defaultValue = "20", required = false) Integer pageSize) {
+  public Page<DepartmentDTO> findAll(
+      @RequestBody DepartmentDTO departmentDTO,
+      @RequestParam(defaultValue = "1", required = false) Integer curPage,
+      @RequestParam(defaultValue = "20", required = false) Integer pageSize) {
     return departmentService.findByCriteria(departmentDTO, curPage - 1, pageSize);
   }
 
   @PostMapping
-  public void save(@RequestBody DepartmentDTO departmentDTO) {
+  public ResponseEntity save(@RequestBody DepartmentDTO departmentDTO) {
     departmentService.save(departmentDTO);
+    return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
   @PutMapping("/{id}")
-  public void update(@RequestBody DepartmentDTO departmentDTO) {
-    departmentService.save(departmentDTO);
+  public ResponseEntity update(@PathVariable("id") Long id, @RequestBody DepartmentDTO departmentDTO) {
+    departmentService.update(id, departmentDTO);
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 
   @DeleteMapping("/{id}")
-  public void delete(@PathVariable("id") Long id) {
+  public ResponseEntity delete(@PathVariable("id") Long id) {
     departmentService.deleteById(id);
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 }

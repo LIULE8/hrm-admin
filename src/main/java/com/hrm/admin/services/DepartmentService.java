@@ -20,4 +20,6 @@ public interface DepartmentService {
     void deleteById(Long id);
 
     Page<DepartmentDTO> findByCriteria(DepartmentDTO departmentDTO, Integer curPage, Integer pageSize);
+
+    void update(Long id, DepartmentDTO departmentDTO);
 }

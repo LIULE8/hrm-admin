@@ -27,52 +27,63 @@ import java.util.List;
 @Service
 @Transactional
 public class DepartmentServiceImpl implements DepartmentService {
-    @Autowired
-    private DepartmentRepository departmentRepository;
-    @Autowired
-    private DepartmentConverter departmentConverter;
+  @Autowired private DepartmentRepository departmentRepository;
+  @Autowired private DepartmentConverter departmentConverter;
 
-    @Override
-    public DepartmentDTO getOne(Long departmentId) {
-        return departmentRepository
-                .findById(departmentId)
-                .map(department -> departmentConverter.convert2DTO(department))
-                .orElse(null);
-    }
+  @Override
+  public DepartmentDTO getOne(Long departmentId) {
+    return departmentRepository
+        .findById(departmentId)
+        .map(department -> departmentConverter.convert2DTO(department))
+        .orElse(null);
+  }
 
-    @Override
-    public List<DepartmentDTO> findAll() {
-        List<Department> departments = departmentRepository.findAll();
-        return departmentConverter.convert2DTOS(departments);
-    }
+  @Override
+  public List<DepartmentDTO> findAll() {
+    List<Department> departments = departmentRepository.findAll();
+    return departmentConverter.convert2DTOS(departments);
+  }
 
-    @Override
-    public void save(DepartmentDTO departmentDTO) {
-        Department department = departmentConverter.convertEntity(departmentDTO);
-        departmentRepository.save(department);
-    }
+  @Override
+  public void save(DepartmentDTO departmentDTO) {
+    Department department = departmentConverter.convertEntity(departmentDTO);
+    departmentRepository.save(department);
+  }
 
-    @Override
-    public void deleteById(Long id) {
-        departmentRepository.deleteById(id);
-    }
+  @Override
+  public void deleteById(Long id) {
+    departmentRepository.deleteById(id);
+  }
 
-    @Override
-    public Page<DepartmentDTO> findByCriteria(DepartmentDTO departmentDTO, Integer curPage, Integer pageSize) {
-        PageRequest pageRequest = PageRequest.of(curPage, pageSize);
-        Specification<Department> specification = buildCriteria(departmentDTO);
-        Page<Department> page = departmentRepository.findAll(specification, pageRequest);
-        return new PageImpl<>(departmentConverter.convert2DTOS(page.getContent()), pageRequest, page.getTotalElements());
-    }
+  @Override
+  public Page<DepartmentDTO> findByCriteria(
+      DepartmentDTO departmentDTO, Integer curPage, Integer pageSize) {
+    PageRequest pageRequest = PageRequest.of(curPage, pageSize);
+    Specification<Department> specification = buildCriteria(departmentDTO);
+    Page<Department> page = departmentRepository.findAll(specification, pageRequest);
+    return new PageImpl<>(
+        departmentConverter.convert2DTOS(page.getContent()), pageRequest, page.getTotalElements());
+  }
 
-    private Specification<Department> buildCriteria(DepartmentDTO departmentDTO) {
-        return (root, criteriaQuery, criteriaBuilder) -> {
-            List<Predicate> list = Lists.newArrayList();
-            if (StringUtils.isNotBlank(departmentDTO.getName())) {
-                list.add(criteriaBuilder.like(root.get("name"), "%" + departmentDTO.getName() + "%"));
-            }
-            Predicate[] predicates = new Predicate[list.size()];
-            return criteriaQuery.where(predicates).getRestriction();
-        };
-    }
+  @Override
+  public void update(Long id, DepartmentDTO departmentDTO) {
+    departmentRepository
+        .findById(id)
+        .ifPresent(
+            dbDepartment -> {
+              Department department = departmentConverter.convertEntity(departmentDTO);
+              dbDepartment.setName(department.getName());
+            });
+  }
+
+  private Specification<Department> buildCriteria(DepartmentDTO departmentDTO) {
+    return (root, criteriaQuery, criteriaBuilder) -> {
+      List<Predicate> list = Lists.newArrayList();
+      if (StringUtils.isNotBlank(departmentDTO.getName())) {
+        list.add(criteriaBuilder.like(root.get("name"), "%" + departmentDTO.getName() + "%"));
+      }
+      Predicate[] predicates = new Predicate[list.size()];
+      return criteriaQuery.where(predicates).getRestriction();
+    };
+  }
 }
