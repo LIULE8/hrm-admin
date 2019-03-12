@@ -54,6 +54,9 @@ public class Employee extends BaseEntity {
   @Column(name = "MONTHLY_SALARY", nullable = false)
   private String monthlySalary;
 
+  @Column(name = "GENDER", nullable = false)
+  private String gender;
+
   @JsonIgnore
   @ManyToOne
   @JoinColumn(name = "DEPARTMENT_ID")

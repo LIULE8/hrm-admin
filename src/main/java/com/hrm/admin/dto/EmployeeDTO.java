@@ -32,5 +32,7 @@ public class EmployeeDTO implements Serializable {
 
     private String monthlySalary;
 
+    private String gender;
+
     private DepartmentDTO department;
 }
