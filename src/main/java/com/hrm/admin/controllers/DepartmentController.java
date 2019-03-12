@@ -30,14 +30,6 @@ public class DepartmentController {
     return departmentService.findAll();
   }
 
-  @GetMapping("list")
-  public Page<DepartmentDTO> findAll(
-      @RequestBody DepartmentDTO departmentDTO,
-      @RequestParam(defaultValue = "1", required = false) Integer curPage,
-      @RequestParam(defaultValue = "20", required = false) Integer pageSize) {
-    return departmentService.findByCriteria(departmentDTO, curPage - 1, pageSize);
-  }
-
   @PostMapping
   public ResponseEntity save(@RequestBody DepartmentDTO departmentDTO) {
     departmentService.save(departmentDTO);

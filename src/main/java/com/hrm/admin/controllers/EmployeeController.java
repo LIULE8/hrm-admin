@@ -26,14 +26,6 @@ public class EmployeeController {
     return employeeService.getOne(employeeId);
   }
 
-  @GetMapping("list")
-  public Page<EmployeeDTO> findAll(
-      @RequestBody EmployeeDTO employeeDTO,
-      @RequestParam(defaultValue = "1", required = false) Integer curPage,
-      @RequestParam(defaultValue = "20", required = false) Integer pageSize) {
-    return employeeService.findByCriteria(employeeDTO, curPage - 1, pageSize);
-  }
-
   @GetMapping
   public List<EmployeeDTO> findAll() {
     return employeeService.findAll();

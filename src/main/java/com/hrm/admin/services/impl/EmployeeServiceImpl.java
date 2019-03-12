@@ -14,11 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.Predicate;
 import java.util.List;
 import java.util.Objects;
 
@@ -79,35 +77,5 @@ public class EmployeeServiceImpl implements EmployeeService {
               dbEmployee.setNationality(employee.getNationality());
               dbEmployee.setMonthlySalary(employee.getMonthlySalary());
             });
-  }
-
-  @Override
-  public Page<EmployeeDTO> findByCriteria(
-      EmployeeDTO employeeDTO, Integer curPage, Integer pageSize) {
-    PageRequest pageRequest = PageRequest.of(curPage, pageSize);
-    Specification<Employee> specification = buildCriteria(employeeDTO);
-    Page<Employee> page = employeeRepository.findAll(specification, pageRequest);
-    return new PageImpl<>(
-        employeeConverter.convert2DTOS(page.getContent()), pageRequest, page.getTotalElements());
-  }
-
-  private Specification<Employee> buildCriteria(EmployeeDTO employeeDTO) {
-    return (root, criteriaQuery, criteriaBuilder) -> {
-      List<Predicate> list = Lists.newArrayList();
-      if (StringUtils.isNotBlank(employeeDTO.getName())) {
-        list.add(criteriaBuilder.like(root.get("name"), "%" + employeeDTO.getName() + "%"));
-      }
-      if (Objects.nonNull(employeeDTO.getId())) {
-        list.add(criteriaBuilder.like(root.get("id"), "%" + employeeDTO.getId() + "%"));
-      }
-      if (Objects.nonNull(employeeDTO.getBirthday())) {
-        list.add(criteriaBuilder.equal(root.get("birthday"),  employeeDTO.getBirthday()));
-      }
-      if (Objects.nonNull(employeeDTO.getMobilePhone())) {
-        list.add(criteriaBuilder.equal(root.get("mobile_phone"),  employeeDTO.getMobilePhone()));
-      }
-      Predicate[] predicates = new Predicate[list.size()];
-      return criteriaQuery.where(list.toArray(predicates)).getRestriction();
-    };
   }
 }
