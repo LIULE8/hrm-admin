@@ -97,8 +97,17 @@ public class EmployeeServiceImpl implements EmployeeService {
       if (StringUtils.isNotBlank(employeeDTO.getName())) {
         list.add(criteriaBuilder.like(root.get("name"), "%" + employeeDTO.getName() + "%"));
       }
+      if (Objects.nonNull(employeeDTO.getId())) {
+        list.add(criteriaBuilder.like(root.get("id"), "%" + employeeDTO.getId() + "%"));
+      }
+      if (Objects.nonNull(employeeDTO.getBirthday())) {
+        list.add(criteriaBuilder.equal(root.get("birthday"),  employeeDTO.getBirthday()));
+      }
+      if (Objects.nonNull(employeeDTO.getMobilePhone())) {
+        list.add(criteriaBuilder.equal(root.get("mobile_phone"),  employeeDTO.getMobilePhone()));
+      }
       Predicate[] predicates = new Predicate[list.size()];
-      return criteriaQuery.where(predicates).getRestriction();
+      return criteriaQuery.where(list.toArray(predicates)).getRestriction();
     };
   }
 }
