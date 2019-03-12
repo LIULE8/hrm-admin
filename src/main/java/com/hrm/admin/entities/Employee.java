@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 /**
  * @author Leo Liu
@@ -22,11 +23,17 @@ public class Employee extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "ID", nullable = false, updatable = false)
+  @Column(name = "ID", nullable = false, updatable = false, columnDefinition = "员工编号")
   private Long id;
 
-  @Column(name = "NAME", nullable = false)
+  @Column(name = "NAME", nullable = false, columnDefinition = "员工姓名")
   private String name;
+
+  @Column(name = "BIRTHDAY", nullable = false, columnDefinition = "出生日期")
+  private LocalDate birthday;
+
+  @Column(name = "MOBILE_PHONE", nullable = false, columnDefinition = "电话号码")
+  private Long mobilePhone;
 
   @JsonIgnore
   @ManyToOne
