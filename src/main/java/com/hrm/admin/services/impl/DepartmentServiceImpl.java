@@ -25,16 +25,18 @@ public class DepartmentServiceImpl implements DepartmentService {
 
   @Override
   public DepartmentDTO getOne(Long departmentId) {
-    return departmentRepository
-        .findById(departmentId)
-        .map(department -> departmentConverter.convert2DTO(department))
-        .orElse(null);
+//    return departmentRepository
+//        .findById(departmentId)
+//        .map(department -> departmentConverter.convert2DTO(department))
+//        .orElse(null);
+    return null;
   }
 
   @Override
   public List<DepartmentDTO> findAll() {
-    List<Department> departments = departmentRepository.findAll();
-    return departmentConverter.convert2DTOS(departments);
+//    List<Department> departments = departmentRepository.findAll();
+//    return departmentConverter.convert2DTOS(departments);
+    return null;
   }
 
   @Override
@@ -45,15 +47,15 @@ public class DepartmentServiceImpl implements DepartmentService {
 
   @Override
   public void deleteById(Long id) {
-    departmentRepository
-        .findById(id)
-        .ifPresent(department -> departmentRepository.delete(department));
+//    departmentRepository
+//        .findById(id)
+//        .ifPresent(department -> departmentRepository.delete(department));
   }
 
   @Override
   public void update(DepartmentDTO departmentDTO) {
-    departmentRepository
-        .findById(departmentDTO.getId())
-        .ifPresent(department -> department.setName(departmentDTO.getName()));
+//    departmentRepository
+//        .findById(departmentDTO.getId())
+//        .ifPresent(department -> department.setName(departmentDTO.getName()));
   }
 }

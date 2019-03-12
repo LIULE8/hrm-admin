@@ -25,10 +25,6 @@ public class EmployeeConverter {
   public EmployeeDTO convert2DTO(Employee employee) {
     EmployeeDTO employeeDTO = new EmployeeDTO();
     BeanUtils.copyProperties(employee, employeeDTO);
-    Department department = employee.getDepartment();
-    if (Objects.nonNull(department)) {
-      employeeDTO.setDepartment(new DepartmentDTO(department.getId(), department.getName()));
-    }
     return employeeDTO;
   }
 

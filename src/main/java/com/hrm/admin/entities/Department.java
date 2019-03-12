@@ -6,7 +6,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
 
@@ -21,7 +23,9 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 public class Department extends BaseEntity {
   private static final long serialVersionUID = 1284320637506589123L;
-  @Id private Long id;
+  @Id private String id;
+  @Field("name")
   private String name;
+  @DBRef
   private List<Employee> employees = Lists.newArrayList();
 }

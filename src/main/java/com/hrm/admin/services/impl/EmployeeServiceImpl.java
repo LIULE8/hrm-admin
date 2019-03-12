@@ -1,7 +1,5 @@
 package com.hrm.admin.services.impl;
 
-import com.auth0.jwt.internal.org.apache.commons.lang3.StringUtils;
-import com.google.common.collect.Lists;
 import com.hrm.admin.convert.EmployeeConverter;
 import com.hrm.admin.dto.DepartmentDTO;
 import com.hrm.admin.dto.EmployeeDTO;
@@ -11,14 +9,10 @@ import com.hrm.admin.repositories.EmployeeRepository;
 import com.hrm.admin.services.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @author LIULE9
@@ -34,48 +28,48 @@ public class EmployeeServiceImpl implements EmployeeService {
 
   @Override
   public EmployeeDTO getOne(Long employeeId) {
-    return employeeRepository
-        .findById(employeeId)
-        .map(employee -> employeeConverter.convert2DTO(employee))
-        .orElse(null);
+//    return employeeRepository
+//        .findById(employeeId)
+//        .map(employee -> employeeConverter.convert2DTO(employee))
+//        .orElse(null);
+      return null;
   }
 
   @Override
   public List<EmployeeDTO> findAll() {
-    List<Employee> employees = employeeRepository.findAll();
-    return employeeConverter.convert2DTOS(employees);
+//    List<Employee> employees = employeeRepository.findAll();
+//    return employeeConverter.convert2DTOS(employees);
+      return null;
   }
 
   @Override
   public void save(EmployeeDTO employeeDTO) {
     Employee employee = employeeConverter.convert2Entity(employeeDTO);
     DepartmentDTO department = employeeDTO.getDepartment();
-    if (Objects.nonNull(department)) {
-      departmentRepository.findById(department.getId()).ifPresent(employee::setDepartment);
-    }
+//    departmentRepository.save(department);
     employeeRepository.save(employee);
   }
 
   @Override
   public void deleteById(Long id) {
-    employeeRepository.findById(id).ifPresent(employee -> employeeRepository.delete(employee));
+//    employeeRepository.findById(id).ifPresent(employee -> employeeRepository.delete(employee));
   }
 
   @Override
   public void update(EmployeeDTO employeeDTO) {
-    employeeRepository
-        .findById(employeeDTO.getId())
-        .ifPresent(
-            dbEmployee -> {
-              Employee employee = employeeConverter.convert2Entity(employeeDTO);
-              dbEmployee.setName(employee.getName());
-              dbEmployee.setBirthday(employee.getBirthday());
-              dbEmployee.setBirthplace(employee.getBirthplace());
-              dbEmployee.setEnglishName(employee.getEnglishName());
-              dbEmployee.setIdCard(employee.getIdCard());
-              dbEmployee.setMobilePhone(employee.getMobilePhone());
-              dbEmployee.setNationality(employee.getNationality());
-              dbEmployee.setMonthlySalary(employee.getMonthlySalary());
-            });
+//    employeeRepository
+//        .findById(employeeDTO.getId())
+//        .ifPresent(
+//            dbEmployee -> {
+//              Employee employee = employeeConverter.convert2Entity(employeeDTO);
+//              dbEmployee.setName(employee.getName());
+//              dbEmployee.setBirthday(employee.getBirthday());
+//              dbEmployee.setBirthplace(employee.getBirthplace());
+//              dbEmployee.setEnglishName(employee.getEnglishName());
+//              dbEmployee.setIdCard(employee.getIdCard());
+//              dbEmployee.setMobilePhone(employee.getMobilePhone());
+//              dbEmployee.setNationality(employee.getNationality());
+//              dbEmployee.setMonthlySalary(employee.getMonthlySalary());
+//            });
   }
 }
