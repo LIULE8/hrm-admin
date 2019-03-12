@@ -23,31 +23,31 @@ public class Employee extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "ID", nullable = false, updatable = false, columnDefinition = "员工编号")
+  @Column(name = "ID", nullable = false, updatable = false)
   private Long id;
 
-  @Column(name = "NAME", nullable = false, columnDefinition = "员工姓名")
+  @Column(name = "NAME", nullable = false)
   private String name;
 
-  @Column(name = "BIRTHDAY", nullable = false, columnDefinition = "出生日期")
+  @Column(name = "BIRTHDAY", nullable = false)
   private LocalDate birthday;
 
-  @Column(name = "MOBILE_PHONE", nullable = false, columnDefinition = "电话号码")
+  @Column(name = "MOBILE_PHONE", nullable = false)
   private Long mobilePhone;
 
-  @Column(name = "ID_CARD", nullable = false, columnDefinition = "身份证")
+  @Column(name = "ID_CARD", nullable = false)
   private String idCard;
 
-  @Column(name = "ENGLISH_NAME", nullable = false, columnDefinition = "英文名")
+  @Column(name = "ENGLISH_NAME", nullable = false)
   private String englishName;
 
-  @Column(name = "NATIONALITY", nullable = false, columnDefinition = "民族")
+  @Column(name = "NATIONALITY", nullable = false)
   private String nationality;
 
-  @Column(name = "BIRTHPLACE", nullable = false, columnDefinition = "籍贯")
+  @Column(name = "BIRTHPLACE", nullable = false)
   private String birthplace;
 
-  @Column(name = "MONTHLY_SALARY", nullable = false, columnDefinition = "月薪")
+  @Column(name = "MONTHLY_SALARY", nullable = false)
   private String monthlySalary;
 
   @JsonIgnore
