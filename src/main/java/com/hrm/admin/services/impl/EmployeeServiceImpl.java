@@ -50,7 +50,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
   @Override
   public void save(EmployeeDTO employeeDTO) {
-    Employee employee = employeeConverter.convertEntity(employeeDTO);
+    Employee employee = employeeConverter.convert2Entity(employeeDTO);
     DepartmentDTO department = employeeDTO.getDepartment();
     if (Objects.nonNull(department)) {
       departmentRepository.findById(department.getId()).ifPresent(employee::setDepartment);
@@ -60,7 +60,25 @@ public class EmployeeServiceImpl implements EmployeeService {
 
   @Override
   public void deleteById(Long id) {
-    employeeRepository.deleteById(id);
+    employeeRepository.findById(id).ifPresent(employee -> employeeRepository.delete(employee));
+  }
+
+  @Override
+  public void update(EmployeeDTO employeeDTO) {
+    employeeRepository
+        .findById(employeeDTO.getId())
+        .ifPresent(
+            dbEmployee -> {
+              Employee employee = employeeConverter.convert2Entity(employeeDTO);
+              dbEmployee.setName(employee.getName());
+              dbEmployee.setBirthday(employee.getBirthday());
+              dbEmployee.setBirthplace(employee.getBirthplace());
+              dbEmployee.setEnglishName(employee.getEnglishName());
+              dbEmployee.setIdCard(employee.getIdCard());
+              dbEmployee.setMobilePhone(employee.getMobilePhone());
+              dbEmployee.setNationality(employee.getNationality());
+              dbEmployee.setMonthlySalary(employee.getMonthlySalary());
+            });
   }
 
   @Override

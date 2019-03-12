@@ -18,19 +18,19 @@ import static java.util.stream.Collectors.toList;
 @Component
 public class DepartmentConverter {
 
-    public DepartmentDTO convert2DTO(Department department){
-        DepartmentDTO departmentDTO = new DepartmentDTO();
-        BeanUtils.copyProperties(department,departmentDTO);
-        return departmentDTO;
-    }
+  public DepartmentDTO convert2DTO(Department department) {
+    DepartmentDTO departmentDTO = new DepartmentDTO();
+    BeanUtils.copyProperties(department, departmentDTO);
+    return departmentDTO;
+  }
 
-    public List<DepartmentDTO> convert2DTOS(List<Department> departments){
-        return departments.stream().map(this::convert2DTO).collect(toList());
-    }
+  public List<DepartmentDTO> convert2DTOS(List<Department> departments) {
+    return departments.stream().map(this::convert2DTO).collect(toList());
+  }
 
-    public Department convertEntity(DepartmentDTO departmentDTO) {
-        Department department = new Department();
-        BeanUtils.copyProperties(departmentDTO, department);
-        return department;
-    }
+  public Department convertEntity(DepartmentDTO departmentDTO) {
+    Department department = new Department();
+    BeanUtils.copyProperties(departmentDTO, department);
+    return department;
+  }
 }

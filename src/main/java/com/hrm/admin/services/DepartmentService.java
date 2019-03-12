@@ -1,6 +1,7 @@
 package com.hrm.admin.services;
 
 import com.hrm.admin.dto.DepartmentDTO;
+import lombok.NonNull;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -15,11 +16,11 @@ public interface DepartmentService {
 
     List<DepartmentDTO> findAll();
 
-    void save(DepartmentDTO eepartmentDTO);
+    void save(DepartmentDTO departmentDTO);
 
     void deleteById(Long id);
 
     Page<DepartmentDTO> findByCriteria(DepartmentDTO departmentDTO, Integer curPage, Integer pageSize);
 
-    void update(Long id, DepartmentDTO departmentDTO);
+    void update(DepartmentDTO departmentDTO);
 }

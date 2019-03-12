@@ -20,4 +20,6 @@ public interface EmployeeService {
     void deleteById(Long id);
 
     Page<EmployeeDTO> findByCriteria(EmployeeDTO employeeDTO, Integer curPage, Integer pageSize);
+
+    void update(EmployeeDTO employeeDTO);
 }

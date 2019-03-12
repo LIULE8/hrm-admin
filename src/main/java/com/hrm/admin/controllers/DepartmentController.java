@@ -44,9 +44,9 @@ public class DepartmentController {
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
-  @PutMapping("/{id}")
-  public ResponseEntity update(@PathVariable("id") Long id, @RequestBody DepartmentDTO departmentDTO) {
-    departmentService.update(id, departmentDTO);
+  @PutMapping
+  public ResponseEntity update(@RequestBody DepartmentDTO departmentDTO) {
+    departmentService.update(departmentDTO);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 
