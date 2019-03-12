@@ -35,6 +35,21 @@ public class Employee extends BaseEntity {
   @Column(name = "MOBILE_PHONE", nullable = false, columnDefinition = "电话号码")
   private Long mobilePhone;
 
+  @Column(name = "ID_CARD", nullable = false, columnDefinition = "身份证")
+  private String idCard;
+
+  @Column(name = "ENGLISH_NAME", nullable = false, columnDefinition = "英文名")
+  private String englishName;
+
+  @Column(name = "NATIONALITY", nullable = false, columnDefinition = "民族")
+  private String nationality;
+
+  @Column(name = "BIRTHPLACE", nullable = false, columnDefinition = "籍贯")
+  private String birthplace;
+
+  @Column(name = "MONTHLY_SALARY", nullable = false, columnDefinition = "月薪")
+  private String monthlySalary;
+
   @JsonIgnore
   @ManyToOne
   @JoinColumn(name = "DEPARTMENT_ID")
