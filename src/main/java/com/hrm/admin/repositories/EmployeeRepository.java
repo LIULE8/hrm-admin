@@ -7,4 +7,4 @@ import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
  * @author LIULE9
  * @create 2019-03-11 2:09 PM
  */
-public interface EmployeeRepository extends ReactiveMongoRepository<Employee, Long> {}
+public interface EmployeeRepository extends ReactiveMongoRepository<Employee, String> {}
