@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
  * @create 11/03/2019
  */
 @RestController
-@RequestMapping("department")
+@RequestMapping("departments")
 @SuppressWarnings("all")
 //@Component
 public class DepartmentHandler {

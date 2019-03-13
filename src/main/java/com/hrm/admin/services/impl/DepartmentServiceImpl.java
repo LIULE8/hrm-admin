@@ -1,6 +1,5 @@
 package com.hrm.admin.services.impl;
 
-import com.hrm.admin.dto.DepartmentDTO;
 import com.hrm.admin.entities.Department;
 import com.hrm.admin.repositories.DepartmentRepository;
 import com.hrm.admin.services.DepartmentService;

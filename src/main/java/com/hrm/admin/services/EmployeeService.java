@@ -1,8 +1,8 @@
 package com.hrm.admin.services;
 
-import com.hrm.admin.dto.EmployeeDTO;
-
-import java.util.List;
+import com.hrm.admin.entities.Employee;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * @author LIULE9
@@ -10,13 +10,11 @@ import java.util.List;
  */
 public interface EmployeeService {
 
-    EmployeeDTO getOne(Long employeeId);
+    Mono<Employee> getOne(String id);
 
-    List<EmployeeDTO> findAll();
+    Flux<Employee> findAll();
 
-    void save(EmployeeDTO employeeDTO);
+    Mono<Employee> save(Employee employee);
 
-    void deleteById(Long id);
-
-    void update(EmployeeDTO employeeDTO);
+    Mono<Void> deleteById(String id);
 }
