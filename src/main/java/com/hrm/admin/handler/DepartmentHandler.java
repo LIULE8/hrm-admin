@@ -9,6 +9,8 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import static org.springframework.web.reactive.function.server.ServerResponse.ok;
+
 /**
  * @author LIULE9
  * @create 11/03/2019
@@ -21,8 +23,8 @@ public class DepartmentHandler {
   @Autowired private DepartmentService departmentService;
 
   @GetMapping("/{id}")
-  public Mono<Department> getOne(@PathVariable("id") String departmentId) {
-    return departmentService.getOne(departmentId);
+  public Mono<ServerResponse> getOne(@PathVariable("id") String departmentId) {
+    return ok().body(departmentService.getOne(departmentId));
   }
 
   @GetMapping
@@ -37,7 +39,7 @@ public class DepartmentHandler {
   }
 
   @DeleteMapping("/{id}")
-  public Mono<ServerResponse> delete(@PathVariable("id") String id) {
+  public Mono delete(@PathVariable("id") String id) {
     departmentService.deleteById(id);
     return ServerResponse.status(HttpStatus.NO_CONTENT).build();
   }

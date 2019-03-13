@@ -31,13 +31,13 @@ public class EmployeeHandler {
   }
 
   @RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
-  public Mono<ServerResponse> save(@RequestBody Employee employee) {
+  public Mono save(@RequestBody Employee employee) {
     employeeService.save(employee);
     return ServerResponse.status(HttpStatus.CREATED).build();
   }
 
   @DeleteMapping("/{id}")
-  public Mono<ServerResponse> delete(@PathVariable("id") String id) {
+  public Mono delete(@PathVariable("id") String id) {
     employeeService.deleteById(id);
     return ServerResponse.status(HttpStatus.NO_CONTENT).build();
   }
