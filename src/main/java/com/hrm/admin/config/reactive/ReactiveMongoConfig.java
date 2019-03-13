@@ -1,4 +1,4 @@
-package com.hrm.admin.config;
+package com.hrm.admin.config.reactive;
 
 import com.mongodb.reactivestreams.client.MongoClient;
 import com.mongodb.reactivestreams.client.MongoClients;

@@ -1,8 +1,6 @@
-package com.hrm.admin.config;
+package com.hrm.admin.config.reactive.route;
 
 import com.hrm.admin.handler.DepartmentHandler;
-import com.hrm.admin.handler.EmployeeHandler;
-import com.hrm.admin.handler.TimeHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,16 +15,11 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
  * @create 13/03/2019
  */
 @Configuration
-public class RouteConfig {
-
+public class DepartmentRouteConfig {
   @Autowired private DepartmentHandler departmentHandler;
-  @Autowired private EmployeeHandler employeeHandler;
-  @Autowired private TimeHandler timeHandler;
 
-  @Bean
-  public RouterFunction<ServerResponse> timerRouter() {
-    return route(GET("/time"), timeHandler::getTime)
-        .andRoute(GET("/date"), timeHandler::getDate)
-        .andRoute(GET("/times"), timeHandler::sendTimePerSec);
-  }
+//  @Bean
+//  public RouterFunction<ServerResponse> departmentRoute() {
+//      return route(GET("department/{id}"),departmentHandler::getOne);
+//  }
 }

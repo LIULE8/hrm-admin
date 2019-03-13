@@ -1,6 +1,5 @@
 package com.hrm.admin.services.impl;
 
-import com.hrm.admin.convert.DepartmentConverter;
 import com.hrm.admin.dto.DepartmentDTO;
 import com.hrm.admin.entities.Department;
 import com.hrm.admin.repositories.DepartmentRepository;
@@ -8,8 +7,8 @@ import com.hrm.admin.services.DepartmentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * @author LIULE9
@@ -19,41 +18,44 @@ import java.util.List;
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
   @Autowired private DepartmentRepository departmentRepository;
-  @Autowired private DepartmentConverter departmentConverter;
 
   @Override
-  public DepartmentDTO getOne(Long departmentId) {
-//    return departmentRepository
-//        .findById(departmentId)
-//        .map(department -> departmentConverter.convert2DTO(department))
-//        .orElse(null);
-    return null;
+  public Mono<Department> getOne(String id) {
+    return departmentRepository
+        .findById(id)
+        .onErrorResume(
+            e -> {
+              throw new RuntimeException("can not find any department by this id " + id);
+            });
   }
 
   @Override
-  public List<DepartmentDTO> findAll() {
-//    List<Department> departments = departmentRepository.findAll();
-//    return departmentConverter.convert2DTOS(departments);
-    return null;
+  public Flux<Department> findAll() {
+    return departmentRepository.findAll();
   }
 
   @Override
-  public void save(DepartmentDTO departmentDTO) {
-    Department department = departmentConverter.convertEntity(departmentDTO);
-    departmentRepository.save(department);
+  public Mono<Department> save(Department department) {
+    return departmentRepository
+        .save(department)
+        .onErrorResume(
+            e ->
+                departmentRepository
+                    .findByNameEquals(department.getName())
+                    .flatMap(
+                        dbDepartment -> {
+                          department.setId(dbDepartment.getId());
+                          return departmentRepository.save(department);
+                        }));
   }
 
   @Override
-  public void deleteById(Long id) {
-//    departmentRepository
-//        .findById(id)
-//        .ifPresent(department -> departmentRepository.delete(department));
-  }
-
-  @Override
-  public void update(DepartmentDTO departmentDTO) {
-//    departmentRepository
-//        .findById(departmentDTO.getId())
-//        .ifPresent(department -> department.setName(departmentDTO.getName()));
+  public Mono<Void> deleteById(String id) {
+    return departmentRepository
+        .deleteById(id)
+        .onErrorResume(
+            e -> {
+              throw new RuntimeException("can not find this department by " + id);
+            });
   }
 }

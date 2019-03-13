@@ -1,10 +1,8 @@
 package com.hrm.admin.services;
 
-import com.hrm.admin.dto.DepartmentDTO;
-import lombok.NonNull;
-import org.springframework.data.domain.Page;
-
-import java.util.List;
+import com.hrm.admin.entities.Department;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  *
@@ -12,13 +10,11 @@ import java.util.List;
  * @create 2019-03-11 7:28 PM
  */
 public interface DepartmentService {
-    DepartmentDTO getOne(Long departmentId);
+    Mono<Department> getOne(String id);
 
-    List<DepartmentDTO> findAll();
+    Flux<Department> findAll();
 
-    void save(DepartmentDTO departmentDTO);
+    Mono<Department> save(Department department);
 
-    void deleteById(Long id);
-
-    void update(DepartmentDTO departmentDTO);
+    Mono<Void> deleteById(String id);
 }
