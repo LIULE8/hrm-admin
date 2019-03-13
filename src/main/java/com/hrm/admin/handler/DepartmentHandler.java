@@ -4,43 +4,52 @@ import com.hrm.admin.entities.Department;
 import com.hrm.admin.services.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.annotation.NonNull;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.web.reactive.function.BodyInserters.fromObject;
+import static org.springframework.web.reactive.function.server.ServerResponse.notFound;
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 
 /**
  * @author LIULE9
  * @create 11/03/2019
  */
-@RestController
-@RequestMapping("departments")
+//@RestController
+//@RequestMapping("departments")
 @SuppressWarnings("all")
-//@Component
+@Component
 public class DepartmentHandler {
-  @Autowired private DepartmentService departmentService;
+    @Autowired
+    private DepartmentService departmentService;
 
-  @GetMapping("/{id}")
-  public Mono<ServerResponse> getOne(@PathVariable("id") String departmentId) {
-    return ok().body(departmentService.getOne(departmentId));
-  }
+    @NonNull
+    public Mono<ServerResponse> getOne(ServerRequest serverRequest) {
+        return departmentService.getOne(serverRequest.pathVariable("id"))
+                .flatMap(person -> ok().contentType(APPLICATION_JSON).body(fromObject(person)))
+                .switchIfEmpty(notFound().build());
+//        return ok().body(departmentService.getOne(serverRequest.pathVariable("id")), Department.class);
+    }
 
-  @GetMapping
-  public Flux<Department> findAll() {
-    return departmentService.findAll();
-  }
+    @NonNull
+    public Mono<ServerResponse> findAll(ServerRequest serverRequest) {
+        return ok().body(departmentService.findAll(), Department.class);
+    }
 
-  @RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
-  public Mono<ServerResponse> save(@RequestBody Department department) {
-    departmentService.save(department);
-    return ServerResponse.status(HttpStatus.CREATED).build();
-  }
+    @NonNull
+    public Mono<ServerResponse> save(ServerRequest serverRequest) {
+        Mono<Department> departmentMono = serverRequest.bodyToMono(Department.class);
+        departmentService.save(departmentMono.block());
+        return ServerResponse.status(HttpStatus.CREATED).build();
+    }
 
-  @DeleteMapping("/{id}")
-  public Mono delete(@PathVariable("id") String id) {
-    departmentService.deleteById(id);
-    return ServerResponse.status(HttpStatus.NO_CONTENT).build();
-  }
+    @NonNull
+    public Mono delete(ServerRequest serverRequest) {
+        departmentService.deleteById(serverRequest.pathVariable("id"));
+        return ServerResponse.status(HttpStatus.NO_CONTENT).build();
+    }
 }

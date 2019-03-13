@@ -10,6 +10,8 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import reactor.netty.http.server.HttpServer;
 
+import java.util.Objects;
+
 /**
  * @author LIULE9
  * @create 13/03/2019
@@ -23,8 +25,9 @@ public class HttpServerConfig {
     public HttpServer httpServer(RouterFunction<?> routerFunction) {
         HttpHandler httpHandler = RouterFunctions.toHttpHandler(routerFunction);
         ReactorHttpHandlerAdapter adapter = new ReactorHttpHandlerAdapter(httpHandler);
-        HttpServer server = HttpServer.create("localhost", Integer.valueOf(environment.getProperty("server.port")));
-        HttpServer handle = server.handle(adapter);
-        return server;
+        return HttpServer.create()
+                .host("localhost")
+                .port(Integer.valueOf(Objects.requireNonNull(environment.getProperty("server.port"))))
+                .handle(adapter);
     }
 }
