@@ -78,6 +78,7 @@ public class EmployeeServiceImpl implements EmployeeService {
               dbEmployee.setMobilePhone(employee.getMobilePhone());
               dbEmployee.setNationality(employee.getNationality());
               dbEmployee.setMonthlySalary(employee.getMonthlySalary());
+              dbEmployee.setGender(employee.getGender());
             });
   }
 
