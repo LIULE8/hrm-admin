@@ -1,6 +1,7 @@
 package com.hrm.admin.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -57,7 +58,8 @@ public class Employee extends BaseEntity {
   @Column(name = "GENDER", nullable = false)
   private String gender;
 
-  @JsonIgnore
+  @JsonManagedReference
+  @JsonBackReference
   @ManyToOne
   @JoinColumn(name = "DEPARTMENT_ID")
   private Department department;

@@ -32,9 +32,12 @@ import java.util.Objects;
 @Transactional
 @AllArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
-  @Autowired private EmployeeRepository employeeRepository;
-  @Autowired private DepartmentRepository departmentRepository;
-  @Autowired private EmployeeConverter employeeConverter;
+  @Autowired
+  private EmployeeRepository employeeRepository;
+  @Autowired
+  private DepartmentRepository departmentRepository;
+  @Autowired
+  private EmployeeConverter employeeConverter;
 
   @Override
   public EmployeeDTO getOne(Long employeeId) {
@@ -81,6 +84,7 @@ public class EmployeeServiceImpl implements EmployeeService {
               dbEmployee.setNationality(employee.getNationality());
               dbEmployee.setMonthlySalary(employee.getMonthlySalary());
               dbEmployee.setGender(employee.getGender());
+              dbEmployee.setDepartment(departmentRepository.findById(employeeDTO.getDepartment().getId()).get());
             });
   }
 
@@ -104,10 +108,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         list.add(criteriaBuilder.like(root.get("id"), "%" + employeeDTO.getId() + "%"));
       }
       if (Objects.nonNull(employeeDTO.getBirthday())) {
-        list.add(criteriaBuilder.equal(root.get("birthday"),  employeeDTO.getBirthday()));
+        list.add(criteriaBuilder.equal(root.get("birthday"), employeeDTO.getBirthday()));
       }
       if (Objects.nonNull(employeeDTO.getMobilePhone())) {
-        list.add(criteriaBuilder.equal(root.get("mobilePhone"),  employeeDTO.getMobilePhone()));
+        list.add(criteriaBuilder.equal(root.get("mobilePhone"), employeeDTO.getMobilePhone()));
       }
       Predicate[] predicates = new Predicate[list.size()];
       return criteriaQuery.where(list.toArray(predicates)).getRestriction();
