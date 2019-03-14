@@ -104,7 +104,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         list.add(criteriaBuilder.equal(root.get("birthday"),  employeeDTO.getBirthday()));
       }
       if (Objects.nonNull(employeeDTO.getMobilePhone())) {
-        list.add(criteriaBuilder.equal(root.get("mobile_phone"),  employeeDTO.getMobilePhone()));
+        list.add(criteriaBuilder.equal(root.get("mobilePhone"),  employeeDTO.getMobilePhone()));
       }
       Predicate[] predicates = new Predicate[list.size()];
       return criteriaQuery.where(list.toArray(predicates)).getRestriction();
