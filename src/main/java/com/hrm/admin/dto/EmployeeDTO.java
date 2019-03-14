@@ -20,7 +20,7 @@ public class EmployeeDTO implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;
 
-    private Long mobilePhone;
+    private String mobilePhone;
 
     private String idCard;
 

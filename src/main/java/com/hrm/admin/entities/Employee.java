@@ -38,7 +38,7 @@ public class Employee extends BaseEntity {
   private LocalDate birthday;
 
   @Column(name = "MOBILE_PHONE", nullable = false)
-  private Long mobilePhone;
+  private String mobilePhone;
 
   @Column(name = "ID_CARD", nullable = false)
   private String idCard;
