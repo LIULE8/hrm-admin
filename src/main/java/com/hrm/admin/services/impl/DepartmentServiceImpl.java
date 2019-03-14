@@ -7,6 +7,7 @@ import com.hrm.admin.dto.DepartmentDTO;
 import com.hrm.admin.entities.Department;
 import com.hrm.admin.repositories.DepartmentRepository;
 import com.hrm.admin.services.DepartmentService;
+import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ import java.util.Random;
 @Slf4j
 @Service
 @Transactional
+@AllArgsConstructor
 public class DepartmentServiceImpl implements DepartmentService {
   @Autowired private DepartmentRepository departmentRepository;
   @Autowired private DepartmentConverter departmentConverter;

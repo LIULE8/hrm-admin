@@ -1,38 +1,70 @@
 package com.hrm.admin.services.impl;
 
+import com.google.common.collect.Lists;
+import com.hrm.admin.convert.DepartmentConverter;
 import com.hrm.admin.dto.DepartmentDTO;
-import com.hrm.admin.services.DepartmentService;
+import com.hrm.admin.entities.Department;
+import com.hrm.admin.repositories.DepartmentRepository;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
+import java.util.Optional;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 public class DepartmentServiceImplTest {
 
-    @Autowired
-    private DepartmentService departmentService;
+    private DepartmentRepository departmentRepository;
 
     @Test
     public void should_save_the_given_department() {
+        departmentRepository = mock(DepartmentRepository.class);
+        DepartmentConverter converter = mock(DepartmentConverter.class);
+        DepartmentServiceImpl service = new DepartmentServiceImpl(departmentRepository, new DepartmentConverter());
+        Department department = new Department();
+        department.setId(1L);
+        department.setName("IRIS");
         DepartmentDTO departmentDTO = new DepartmentDTO(1L, "IRIS");
-        departmentService.save(departmentDTO);
+
+        when(converter.convertEntity(departmentDTO)).thenReturn(department);
+        when(departmentRepository.save(department)).thenReturn(department);
+
+        service.save(departmentDTO);
+
+        verify(departmentRepository, times(1)).save(department);
     }
 
     @Test
     public void should_get_info_of_specific_department_when_give_the_id() {
-        departmentService.getOne(1L);
+        departmentRepository = mock(DepartmentRepository.class);
+        DepartmentServiceImpl service = new DepartmentServiceImpl(departmentRepository, new DepartmentConverter());
+        Department department = new Department();
+        department.setName("IRIS");
+
+        when(departmentRepository.findById(1L)).thenReturn(Optional.of(department));
+        DepartmentDTO one = service.getOne(1L);
+
+        assertThat(department.getName(), is(one.getName()));
     }
 
     @Test
     public void should_get_info_of_all_departments() {
-        List<DepartmentDTO> departmentDTOS = departmentService.findAll();
-        for (DepartmentDTO departmentDTO : departmentDTOS) {
-            System.out.println(departmentDTO.getId() + " " + departmentDTO.getName());
-        }
+        departmentRepository = mock(DepartmentRepository.class);
+        DepartmentServiceImpl service = new DepartmentServiceImpl(departmentRepository, new DepartmentConverter());
+        Department department1 = new Department();
+        department1.setName("IRIS");
+        Department department2 = new Department();
+        department1.setName("CargoSmart");
+        List<Department> departments = Lists.newArrayList(department1, department2);
+
+        when(departmentRepository.findAll()).thenReturn(departments);
+        List<DepartmentDTO> list = service.findAll();
+
+        assertThat(departments.size(), is(list.size()));
     }
 }
