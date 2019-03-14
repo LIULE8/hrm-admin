@@ -26,7 +26,7 @@ public class EmployeeController {
     return employeeService.getOne(employeeId);
   }
 
-  @PostMapping("list")
+  @GetMapping("list")
   public Page<EmployeeDTO> findAll(
       @RequestBody EmployeeDTO employeeDTO,
       @RequestParam(defaultValue = "1", required = false) Integer curPage,
