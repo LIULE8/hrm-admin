@@ -9,6 +9,8 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author LIULE9
  * @create 11/03/2019
@@ -27,6 +29,11 @@ public class EmployeeHandler {
 
   @GetMapping
   public Flux<Employee> findAll() {
+    try {
+      TimeUnit.MILLISECONDS.sleep(10);
+    } catch (InterruptedException e) {
+      throw new RuntimeException("Error during thread sleep");
+    }
     return employeeService.findAll();
   }
 

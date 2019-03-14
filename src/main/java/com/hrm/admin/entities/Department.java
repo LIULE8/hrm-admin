@@ -28,6 +28,6 @@ public class Department {
   @Field("name")
   @Indexed(unique = true)
   private String name;
-  @DBRef(lazy = true)
-  private List<Employee> employees = Lists.newArrayList();
+//  @DBRef(lazy = true)
+//  private List<Employee> employees = Lists.newArrayList();
 }
