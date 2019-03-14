@@ -22,12 +22,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class Department extends BaseEntity {
+public class Department {
   private static final long serialVersionUID = 1284320637506589123L;
   @Id private String id;
   @Field("name")
   @Indexed(unique = true)
   private String name;
-  @DBRef
+  @DBRef(lazy = true)
   private List<Employee> employees = Lists.newArrayList();
 }

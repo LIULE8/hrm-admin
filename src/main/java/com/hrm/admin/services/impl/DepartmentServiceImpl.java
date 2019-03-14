@@ -1,10 +1,15 @@
 package com.hrm.admin.services.impl;
 
+import com.hrm.admin.dto.DepartmentDTO;
 import com.hrm.admin.entities.Department;
 import com.hrm.admin.repositories.DepartmentRepository;
 import com.hrm.admin.services.DepartmentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -17,6 +22,7 @@ import reactor.core.publisher.Mono;
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
   @Autowired private DepartmentRepository departmentRepository;
+  @Autowired private ReactiveMongoTemplate reactiveMongoTemplate;
 
   @Override
   public Mono<Department> getOne(String id) {
@@ -56,5 +62,10 @@ public class DepartmentServiceImpl implements DepartmentService {
             e -> {
               throw new RuntimeException("can not find this department by " + id);
             });
+  }
+
+  @Override
+  public Mono<Department> update(Department department) {
+    return departmentRepository.deleteById(department.getId()).then(departmentRepository.save(department));
   }
 }

@@ -20,7 +20,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class Employee extends BaseEntity {
+public class Employee {
   private static final long serialVersionUID = -3894079727069874921L;
 
   @Id private String id;

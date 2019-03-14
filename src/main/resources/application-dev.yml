@@ -1,13 +1,17 @@
-#spring:
-#  data:
-#    mongodb:
-#      uri: mongodb://localhost:27017/hrmadmin
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/hrmadmin
 
 
 server:
   port: 9090
 
-spring:
-  data:
-    mongodb:
-      host: localhost
+#spring:
+#  data:
+#    mongodb:
+#      host: localhost
+logging:
+  pattern:
+    console: "[%d{yyyy-MM-dd HH:mm:ss.SSS}] [${PID}] [%thread] %-5level %logger{36}.%M - %msg%n"
+
