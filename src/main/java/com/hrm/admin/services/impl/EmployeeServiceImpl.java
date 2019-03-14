@@ -9,6 +9,7 @@ import com.hrm.admin.entities.Employee;
 import com.hrm.admin.repositories.DepartmentRepository;
 import com.hrm.admin.repositories.EmployeeRepository;
 import com.hrm.admin.services.EmployeeService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,6 +30,7 @@ import java.util.Objects;
 @Slf4j
 @Service
 @Transactional
+@AllArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
   @Autowired private EmployeeRepository employeeRepository;
   @Autowired private DepartmentRepository departmentRepository;
