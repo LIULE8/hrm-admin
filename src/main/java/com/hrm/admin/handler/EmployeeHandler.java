@@ -44,7 +44,6 @@ public class EmployeeHandler {
 
   @DeleteMapping("/{id}")
   public Mono delete(@PathVariable("id") String id) {
-    employeeService.deleteById(id);
-    return ServerResponse.noContent().build();
+    return employeeService.deleteById(id);
   }
 }

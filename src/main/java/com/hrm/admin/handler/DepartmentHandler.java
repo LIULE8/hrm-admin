@@ -29,11 +29,6 @@ public class DepartmentHandler {
 
   @GetMapping
   public Flux<Department> findAll() {
-    try {
-      TimeUnit.MILLISECONDS.sleep(10);
-    } catch (InterruptedException e) {
-      throw new RuntimeException("Error during thread sleep");
-    }
     return departmentService.findAll();
   }
 
@@ -49,7 +44,6 @@ public class DepartmentHandler {
 
   @DeleteMapping("/{id}")
   public Mono delete(@PathVariable("id") String id) {
-    departmentService.deleteById(id);
-    return ServerResponse.noContent().build();
+    return departmentService.deleteById(id);
   }
 }
