@@ -1,5 +1,6 @@
 package com.hrm.admin.services.impl;
 
+import com.hrm.admin.entities.Department;
 import com.hrm.admin.entities.Employee;
 import com.hrm.admin.repositories.EmployeeRepository;
 import com.hrm.admin.services.EmployeeService;
@@ -46,5 +47,11 @@ public class EmployeeServiceImpl implements EmployeeService {
             e -> {
               throw new RuntimeException("can not find employee by this id " + id);
             });
+  }
+
+
+  @Override
+  public Mono<Employee> update(Employee employee) {
+    return employeeRepository.deleteById(employee.getId()).then(employeeRepository.save(employee));
   }
 }

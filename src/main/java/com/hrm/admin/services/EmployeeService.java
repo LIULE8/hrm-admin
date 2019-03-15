@@ -17,4 +17,6 @@ public interface EmployeeService {
     Mono<Employee> save(Employee employee);
 
     Mono<Void> deleteById(String id);
+
+    Mono<Employee> update(Employee employee);
 }

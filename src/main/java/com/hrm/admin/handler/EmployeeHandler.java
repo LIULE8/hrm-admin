@@ -29,18 +29,17 @@ public class EmployeeHandler {
 
   @GetMapping
   public Flux<Employee> findAll() {
-    try {
-      TimeUnit.MILLISECONDS.sleep(10);
-    } catch (InterruptedException e) {
-      throw new RuntimeException("Error during thread sleep");
-    }
     return employeeService.findAll();
   }
 
-  @RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
-  public Mono save(@RequestBody Employee employee) {
-    employeeService.save(employee);
-    return ServerResponse.status(HttpStatus.CREATED).build();
+  @PostMapping
+  public Mono<Employee> save(@RequestBody Employee employee) {
+    return employeeService.save(employee);
+  }
+
+  @PutMapping
+  public Mono<Employee> update(@RequestBody Employee employee) {
+    return employeeService.update(employee);
   }
 
   @DeleteMapping("/{id}")
