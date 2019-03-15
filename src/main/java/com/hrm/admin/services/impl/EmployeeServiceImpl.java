@@ -102,7 +102,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     return (root, criteriaQuery, criteriaBuilder) -> {
       List<Predicate> list = Lists.newArrayList();
       if (StringUtils.isNotBlank(employeeDTO.getName())) {
-        list.add(criteriaBuilder.like(root.get("name"), "%" + employeeDTO.getName() + "%"));
+        list.add(criteriaBuilder.or(
+            criteriaBuilder.like(root.get("name"), "%" + employeeDTO.getName() + "%"),
+            criteriaBuilder.like(root.get("englishName"), "%" + employeeDTO.getName() + "%")
+        ));
       }
       if (Objects.nonNull(employeeDTO.getId())) {
         list.add(criteriaBuilder.equal(root.get("id"), employeeDTO.getId()));
