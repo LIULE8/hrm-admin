@@ -7,26 +7,33 @@ import com.hrm.admin.repositories.DepartmentRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -35,60 +42,105 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ComponentScan(basePackages = {"com.hrm.admin"})
 @SpringBootTest
 @AutoConfigureMockMvc
+@AutoConfigureTestDatabase(replace = Replace.AUTO_CONFIGURED)
 public class DepartmentControllerTest {
-    @Autowired
-    private MockMvc mockMvc;
-    @Autowired
-    private ObjectMapper mapper;
+    @Autowired private MockMvc mockMvc;
+    @Autowired private ObjectMapper mapper;
 
-    @MockBean
-    private DepartmentRepository repository;
+    @MockBean private DepartmentRepository repository;
 
     @Test
     public void should_get_info_of_specific_department_when_give_the_id() throws Exception {
-        Department department1 = new Department();
-        Department department2 = new Department();
-        department1.setId(1L);department1.setName("IRIS");
-        department2.setId(2L);department2.setName("CargoSmart");
-        given(repository.findById(1L)).willReturn(Optional.of(department1));
-        mockMvc.perform(get("/departments/1")).andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is("IRIS")))
+        Department iris = new Department(1L, "Iris", new ArrayList<>());
+
+        given(repository.findById(1L)).willReturn(Optional.of(iris));
+
+        mockMvc.perform(get("/departments/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is("Iris")))
                 .andExpect(jsonPath("$.id", is(1)));
     }
 
     @Test
     public void should_get_info_of_all_departments() throws Exception {
-        Department department1 = new Department();
-        Department department2 = new Department();
-        department1.setId(1L);department1.setName("IRIS");
-        department2.setId(2L);department2.setName("CargoSmart");
-        List<Department> departments= Arrays.asList(department1,department2);
+        Department iris = new Department(1L, "Iris", new ArrayList<>());
+        Department cargoSmart= new Department(2L, "CargoSmart", new ArrayList<>());
+        List<Department> departments= Arrays.asList(iris, cargoSmart);
+
         given(repository.findAll()).willReturn(departments);
+
         mockMvc.perform(get("/departments")).andExpect(status().isOk())
                 .andExpect(jsonPath("$",hasSize(2)))
-                .andExpect(jsonPath("$[0].name", is("IRIS")))
+                .andExpect(jsonPath("$[0].name", is("Iris")))
+                .andExpect(jsonPath("$[1].name", is("CargoSmart")))
+                .andExpect(jsonPath("$[0].id", is(1)))
                 .andExpect(jsonPath("$[1].id", is(2)));
     }
 
     @Test
     public void should_save_the_given_department() throws Exception {
-        Department department1 = new Department();
-        department1.setId(1L);department1.setName("IRIS");
-        given(repository.save(department1)).willReturn(department1);
-        ResultActions result = mockMvc.perform(post("/departments")
+        Department iris = new Department();
+        iris.setName("Iris");
+        Department saved = new Department(1L, "Iris", new ArrayList<>());
+        given(repository.save(iris)).willReturn(saved);
+
+        ResultActions result = mockMvc.perform(
+            post("/departments")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(new DepartmentDTO(1L,"IRIS"))));
+                .content(mapper.writeValueAsString(new DepartmentDTO(1L,"Iris")))
+        );
 
         result.andExpect(status().isCreated()).andDo(print());
+        verify(repository, times(1)).save(saved);
     }
 
     @Test
     public void should_delete_the_specific_department_when_give_id() throws Exception {
+        Department iris = new Department(1L, "Iris", new ArrayList<>());
+        given(repository.findById(1L)).willReturn(Optional.of(iris));
+        doNothing().when(repository).delete(iris);
 
-        Department department1 = new Department();
-        department1.setId(1L);department1.setName("IRIS");
-        given(repository.findById(1L)).willReturn(Optional.of(department1));
         ResultActions result = mockMvc.perform(delete("/departments/1"));
+
         result.andExpect(status().isNoContent()).andDo(print());
+        verify(repository, times(1)).findById(1L);
+        verify(repository, times(1)).delete(iris);
+    }
+
+    @Test
+    public void should_update_the_specific_department_when_give_id() throws Exception {
+        Department originDepartment = new Department(1L, "Iris", new ArrayList<>());
+        given(repository.findById(1L)).willReturn(Optional.of(originDepartment));
+
+        ResultActions result = mockMvc.perform(
+            put("/departments")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(new DepartmentDTO(1L,"CargoSmart")))
+        );
+
+        result.andExpect(status().isNoContent()).andDo(print());
+        verify(repository, times(1)).findById(1L);
+        assertThat(originDepartment.getName(), is("CargoSmart"));
+    }
+
+    @Test
+    public void should_search_departments_by_the_given_criteria() throws Exception {
+        DepartmentDTO criteriaDto = new DepartmentDTO();
+        criteriaDto.setName("Iris");
+        Department iris2 = new Department(1L, "Iris2", new ArrayList<>());
+        Department iris4 = new Department(2L, "Iris4", new ArrayList<>());
+        List<Department> departments = Arrays.asList(iris2, iris4);
+        PageImpl<Department> found = new PageImpl<>(departments, PageRequest.of(1,2), 2);
+        given(repository.findAll(any(Specification.class), eq(PageRequest.of(1,2)))).willReturn(found);
+
+        ResultActions result = mockMvc.perform(
+            get("/departments")
+                .param("curPage", "1")
+                .param("pageSize", "2")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(criteriaDto))
+        );
+
+        result.andExpect(status().isOk());
     }
 }
