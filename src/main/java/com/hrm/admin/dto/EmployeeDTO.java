@@ -1,7 +1,9 @@
 package com.hrm.admin.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -11,6 +13,8 @@ import java.time.LocalDate;
  * @create 11/03/2019
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class EmployeeDTO implements Serializable {
 
     private static final long serialVersionUID = -7229588852420224446L;

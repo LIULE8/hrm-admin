@@ -13,13 +13,15 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-//@AutoConfigureTestDatabase(replace=Replace.AUTO_CONFIGURED)
+@AutoConfigureTestDatabase(replace = Replace.AUTO_CONFIGURED)
 public class EmployeeRepositoryTest {
   private Department cargoSmart = new Department(1L, "CargoSmart", new ArrayList<>());
   private Employee quinn = new Employee(1L, "Quinn", LocalDate.now(), "134322561", "4421334199511112356", "Quinn Huang", "汉", "广州","男", "2125121",

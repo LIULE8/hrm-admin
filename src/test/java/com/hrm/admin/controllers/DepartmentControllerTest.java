@@ -123,6 +123,7 @@ public class DepartmentControllerTest {
         assertThat(originDepartment.getName(), is("CargoSmart"));
     }
 
+    //TODO not sure how to test
     @Test
     public void should_search_departments_by_the_given_criteria() throws Exception {
         DepartmentDTO criteriaDto = new DepartmentDTO();
@@ -134,7 +135,7 @@ public class DepartmentControllerTest {
         given(repository.findAll(any(Specification.class), eq(PageRequest.of(1,2)))).willReturn(found);
 
         ResultActions result = mockMvc.perform(
-            get("/departments")
+            get("/departments/list")
                 .param("curPage", "1")
                 .param("pageSize", "2")
                 .contentType(MediaType.APPLICATION_JSON)
