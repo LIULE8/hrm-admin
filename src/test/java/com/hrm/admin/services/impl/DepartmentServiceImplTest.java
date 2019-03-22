@@ -67,4 +67,32 @@ public class DepartmentServiceImplTest {
 
         assertThat(departments.size(), is(list.size()));
     }
+
+    @Test
+    public void should_delete_specific_department_when_give_the_id() {
+        departmentRepository = mock(DepartmentRepository.class);
+        DepartmentServiceImpl service = new DepartmentServiceImpl(departmentRepository, new DepartmentConverter());
+        Department department1 = new Department();
+
+        when(departmentRepository.findById(1L)).thenReturn(Optional.of(department1));
+        service.deleteById(1L);
+
+        verify(departmentRepository, times(1)).delete(department1);
+    }
+
+    @Test
+    public void should_update_specific_department_when_give_the_id() {
+        departmentRepository = mock(DepartmentRepository.class);
+        DepartmentServiceImpl service = new DepartmentServiceImpl(departmentRepository, new DepartmentConverter());
+        Department department1 = new Department();
+        department1.setName("IRIS");
+        DepartmentDTO departmentDTO = new DepartmentDTO();
+        departmentDTO.setId(1L);
+        departmentDTO.setName("CargoSmart");
+
+        when(departmentRepository.findById(1L)).thenReturn(Optional.of(department1));
+        service.update(departmentDTO);
+
+        assertThat("CargoSmart", is(department1.getName()));
+    }
 }
